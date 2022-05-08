@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware( ['auth:sanctum'] )->only(['store', 'update', 'destroy']);
+        $this->middleware( ['ability:create'] )->only('store');
+        $this->middleware( ['ability:update'] )->only('update');
+        $this->middleware( ['ability:delete'] )->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,7 +42,7 @@ class ItemController extends Controller
         DesignImages::extract($design);
         $design->refresh();
 
-        return DesignResource::make($design);
+        return $design->id;
     }
 
     /**
@@ -55,15 +63,20 @@ class ItemController extends Controller
      * @param  int  $id
      * @return DesignResource
      */
-    public function update(Request $request, Design $design)
+    public function update(Request $request, Design $item)
     {
-        $design->update($request->all());
-        $design->clearMediaCollectionExcept();
-        DesignImages::setDesignMedia($design, $request->get('preview'), 'preview');
-        DesignImages::extract($design);
-        $design->refresh();
+        logger()->info('Updating', $item->only(['id', 'title']));
+        $item->author()->associate( auth()->user() );
+        $item->update($request->all());
+        $item->refresh();
 
-        return DesignResource::make($design);
+        $item->clearMediaCollection('preview');
+        DesignImages::setDesignMedia($item, $request->get('preview'), 'preview');
+        $item->clearMediaCollection('node-images');
+        DesignImages::extract($item);
+
+        $item->refresh();
+        return DesignResource::make($item);
     }
 
     /**
