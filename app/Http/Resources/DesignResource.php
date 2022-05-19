@@ -27,14 +27,16 @@ class DesignResource extends JsonResource
 
     private function transformedData()
     {
-        return collect($this->data)->map(function ($item) {
-            switch ($item['type']) {
-                case Design::TYPE_IMAGE:
-                    $item['media'] = Media::findOrFail($item['media'])->getFullUrl();
-                    break;
-            }
+        return [
+            'items' => collect($this->data['items'])->map(function ($item) {
+                if ( isset($item['image_data'] ) ) {
+                    $item['image_data']['img'] = Media::findOrFail($item['image_data']['media'])->getFullUrl();
+                    unset($item['image_data']['media']);
+                }
 
-            return $item;
-        });
+                return $item;
+            }),
+            'bg_image' => $this->getFirstMediaUrl('background')
+        ];
     }
 }
