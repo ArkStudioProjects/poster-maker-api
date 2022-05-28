@@ -19,6 +19,7 @@ class DesignResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'categories' => $this->categories()->pluck('id'),
             'data' => $this->transformedData(),
             'thumbnail' => $this->getFirstMediaUrl('preview'),
             'created_at' => $this->created_at,

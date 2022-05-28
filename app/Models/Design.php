@@ -12,9 +12,6 @@ class Design extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    const TYPE_IMAGE = 'IMAGE';
-    const TYPE_TEXT = 'TEXT';
-
     protected $casts = [
         'data' => 'array'
     ];
@@ -27,5 +24,10 @@ class Design extends Model implements HasMedia
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany( Category::class );
     }
 }

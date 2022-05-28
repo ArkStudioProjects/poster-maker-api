@@ -41,6 +41,7 @@ class ItemController extends Controller
         DesignImages::setDesignMedia($design, $request->get('preview'), 'preview');
         DesignImages::extract($design);
         $design->refresh();
+        $design->categories()->attach( $request->input('category'));
 
         return $design->id;
     }
@@ -67,6 +68,7 @@ class ItemController extends Controller
     {
         logger()->info('Updating', $item->only(['id', 'title']));
         $item->author()->associate( auth()->user() );
+        $item->categories()->attach( $request->input('category'));
         $item->update($request->all());
         $item->refresh();
 
