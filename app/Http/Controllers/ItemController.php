@@ -68,7 +68,7 @@ class ItemController extends Controller
     {
         logger()->info('Updating', $item->only(['id', 'title']));
         $item->author()->associate( auth()->user() );
-        $item->categories()->attach( $request->input('category'));
+        $item->categories()->sync( [ $request->input('category') ]);
         $item->update($request->all());
         $item->refresh();
 
