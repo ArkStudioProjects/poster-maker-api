@@ -28,27 +28,24 @@ class DesignResource extends JsonResource
 
     private function transformedData()
     {
-        $data = [
+        return [
             'items' => collect($this->data['items'])->map(function ($item) {
                 if ( isset($item['image_data'] ) ) {
                     $item['image_data']['img'] = Media::findOrFail($item['image_data']['media'])->getFullUrl();
                     unset($item['image_data']['media']);
                 }
 
+                array_walk_recursive( $item, [ $this, 'int_to_float' ] );
+
                 return $item;
             }),
             'bg_image' => $this->getFirstMediaUrl('background')
         ];
-        array_walk_recursive( $data, [ $this, 'int_to_float' ] );
-
-        return $data;
     }
 
-    public function int_to_float( $data ) {
+    public function int_to_float( &$data ) {
         if( is_int( $data ) ) {
-            return floatval( $data );
+            $data = floatval( $data );
         }
-
-        return $data;
     }
 }
