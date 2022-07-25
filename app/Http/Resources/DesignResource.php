@@ -28,7 +28,7 @@ class DesignResource extends JsonResource
 
     private function transformedData()
     {
-        return [
+        $data = [
             'items' => collect($this->data['items'])->map(function ($item) {
                 if ( isset($item['image_data'] ) ) {
                     $item['image_data']['img'] = Media::findOrFail($item['image_data']['media'])->getFullUrl();
@@ -39,5 +39,16 @@ class DesignResource extends JsonResource
             }),
             'bg_image' => $this->getFirstMediaUrl('background')
         ];
+        array_walk_recursive( $data, [ $this, 'int_to_float' ] );
+
+        return $data;
+    }
+
+    public function int_to_float( $data ) {
+        if( is_int( $data ) ) {
+            return floatval( $data );
+        }
+
+        return $data;
     }
 }
