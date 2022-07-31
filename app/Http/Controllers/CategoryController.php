@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\CategoryResource;
-use App\Http\Resources\DesignResource;
+use App\Http\Resources\DesignResourceLite;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -44,7 +44,7 @@ class CategoryController extends Controller
     {
         $designs = $category->designs()->paginate();
 
-        return DesignResource::collection($designs)
+        return DesignResourceLite::collection($designs)
             ->additional(CategoryResource::make($category)->resolve());
     }
 
