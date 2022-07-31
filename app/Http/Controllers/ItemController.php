@@ -54,7 +54,7 @@ class ItemController extends Controller
      */
     public function show(Design $item)
     {
-        return DesignResource::make($item);
+        return DesignResource::make($item)->toJson(JSON_PRESERVE_ZERO_FRACTION);
     }
 
     /**
