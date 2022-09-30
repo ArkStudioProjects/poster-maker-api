@@ -75,6 +75,7 @@ class ItemController extends Controller
         $item->clearMediaCollection('preview');
         DesignImages::setDesignMedia($item, $request->get('preview'), 'preview');
         $item->clearMediaCollection('node-images');
+        $item->clearMediaCollection('background');
         DesignImages::extract($item);
 
         $item->refresh();
