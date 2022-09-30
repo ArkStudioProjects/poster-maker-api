@@ -21,7 +21,7 @@ class DesignResource extends JsonResource
             'title' => $this->title,
             'categories' => $this->categories()->pluck('id'),
             'data' => $this->transformedData(),
-            'thumbnail' => $this->getFirstMediaUrl('preview'),
+            'thumbnail' => str_replace( '/storage/', '/manipulation/thumbnail/', $this->getFirstMediaUrl('preview') ),
             'created_at' => $this->created_at,
         ];
     }
@@ -39,7 +39,7 @@ class DesignResource extends JsonResource
 
                 return $item;
             }),
-            'bg_image' => $this->getFirstMediaUrl('background')
+            'bg_image' => $this->getFirstMediaUrl('background'),
         ];
     }
 
