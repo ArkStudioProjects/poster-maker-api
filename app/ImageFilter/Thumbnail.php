@@ -9,6 +9,9 @@ class Thumbnail implements FilterInterface
 {
     public function applyFilter(Image $image)
     {
-        return $image->fit(119, 168);
+        return $image->resize(119, 168, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
     }
 }
