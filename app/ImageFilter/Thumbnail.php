@@ -12,6 +12,6 @@ class Thumbnail implements FilterInterface
         return $image->resize(119, 168, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
-        });
+        })->encode(('webp'), 20);
     }
 }
