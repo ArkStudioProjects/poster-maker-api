@@ -30,6 +30,11 @@ class DesignResource extends JsonResource
     {
         return [
             'items' => collect($this->data['items'])->map(function ($item) {
+
+                if ( isset($item['text_data'] ) ) {
+                    $item['text_data']['text_stroke_color'] = null;
+                }
+
                 if ( isset($item['image_data'] ) ) {
                     $item['image_data']['img'] = Media::findOrFail($item['image_data']['media'])->getFullUrl();
                     unset($item['image_data']['media']);
