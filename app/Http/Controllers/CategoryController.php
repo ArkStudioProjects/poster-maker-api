@@ -18,7 +18,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return new CategoryCollection(Category::topLevel()->with('subCategories')->get());
+        $categories = Category::topLevel()
+            ->with(['subCategories' => function($q) {
+                $q->orderBy('order', 'desc')
+                  ->orderBy('id');
+            }])
+            ->orderBy('order', 'desc')
+            ->orderBy('id')
+            ->get();
+        return new CategoryCollection( $categories );
     }
 
     /**
