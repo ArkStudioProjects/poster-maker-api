@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->integer('order')->after('parent_id');
+            $table->integer('order')->after('parent_id')->default(0);
         });
     }
 
