@@ -50,7 +50,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $designs = $category->designs()->paginate();
+        $designs = $category->designs()->orderBy('updated_at', 'desc')->paginate();
 
         return DesignResourceLite::collection($designs)
             ->additional(CategoryResource::make($category)->resolve());
