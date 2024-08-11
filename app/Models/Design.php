@@ -14,12 +14,14 @@ class Design extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
 
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
+        'keywords' => 'array',
     ];
 
     protected $fillable = [
         'title',
         'data',
+        'keywords',
     ];
 
     public function registerMediaCollections(): void

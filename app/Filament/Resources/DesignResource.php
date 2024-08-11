@@ -3,14 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DesignResource\Pages;
-use App\Filament\Resources\DesignResource\RelationManagers;
 use App\Models\Design;
-use Filament\Forms;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,9 +15,6 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Json;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 
 class DesignResource extends Resource
@@ -45,6 +39,9 @@ class DesignResource extends Resource
                     ->relationship('categories', 'name')
                     ->multiple()
                     ->required(),
+                TagsInput::make('keywords'),
+                Placeholder::make('preview')
+                    ->content(fn (Design $record) => new HtmlString('<a target="_blank" href="' . $record->getFirstMediaUrl('preview') . '" target="_blank"><img src="' . $record->getFirstMediaUrl('preview') . '" alt="' . $record->title . '"></a>')),
                 Section::make('data')
                     ->collapsed()
                     ->schema([
@@ -65,6 +62,8 @@ class DesignResource extends Resource
                 TextColumn::make('categories.name')
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('keywords')
+                    ->badge(),
                 ImageColumn::make('preview')
                     ->state(fn (Design $record) => $record->getFirstMediaUrl('preview', 'thumbnail')),
             ])
