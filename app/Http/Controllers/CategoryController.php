@@ -20,7 +20,7 @@ class CategoryController extends Controller
     {
         $categories = Category::topLevel()
             ->with(['subCategories' => function($q) {
-                $q->orderBy('order', 'desc')
+                $q->orderBy('order', 'asc')
                   ->orderBy('id');
             }])
             ->orderBy('order', 'asc')
