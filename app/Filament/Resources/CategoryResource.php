@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -48,7 +49,19 @@ class CategoryResource extends Resource
                     ->state(fn (Category $record) => $record->parent ? $record->parent->name . ' / ' . $record->name : $record->name ),
             ])
             ->filters([
-                //
+                SelectFilter::make('parent_id')
+                    ->label('Type')
+                    ->placeholder('Top Level')
+                    ->relationship('parent', 'name', fn (Builder $query) => $query->topLevel())
+                    ->query( function (Builder $query, array $data) {
+                        return $query
+                            ->when(isset( $data['value'] ) && $data['value'], function (Builder $query ) use ($data) {
+                                return $query->where('parent_id', $data['value']);
+                            })
+                            ->when(!isset( $data['value'] ) || !$data['value'], function (Builder $query) {
+                                return $query->topLevel();
+                            });
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
