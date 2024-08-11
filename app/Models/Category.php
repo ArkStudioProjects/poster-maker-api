@@ -14,6 +14,11 @@ class Category extends Model
         $query->whereNull('parent_id');
     }
 
+    public function parent()
+    {
+        return $this->belongsTo( self::class, 'parent_id' );
+    }
+
     public function subCategories()
     {
         return $this->hasMany( self::class, 'parent_id' );
