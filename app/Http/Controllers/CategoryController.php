@@ -23,7 +23,7 @@ class CategoryController extends Controller
                 $q->orderBy('order', 'desc')
                   ->orderBy('id');
             }])
-            ->orderBy('order', 'desc')
+            ->orderBy('order', 'asc')
             ->orderBy('id')
             ->get();
         return new CategoryCollection( $categories );
