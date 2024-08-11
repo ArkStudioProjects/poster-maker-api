@@ -29,7 +29,7 @@ class CreateTestDesign extends Command
      */
     public function handle()
     {
-        $user = User::factory()->create();
+        $user = User::first() ? User::first() : User::factory()->create();
         Sanctum::actingAs($user, ['*']);
 
         $token = $user->createToken('test', ['*'])->plainTextToken;
