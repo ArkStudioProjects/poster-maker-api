@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Design extends Model implements HasMedia
 {
@@ -20,6 +21,18 @@ class Design extends Model implements HasMedia
         'title',
         'data',
     ];
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('preview')
+            ->registerMediaConversions( function (Media $media) {
+                $this
+                    ->addMediaConversion('thumbnail')
+                    ->width(119)
+                    ->height(168);
+            } );
+    }
 
     public function author()
     {
