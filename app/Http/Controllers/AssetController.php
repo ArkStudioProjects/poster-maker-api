@@ -20,7 +20,7 @@ class AssetController extends Controller
 
         $files = Storage::files( $path );
         $files = collect( $files )->map( function( $file ) use ($path_prefix) {
-            return asset( 'storage/assets/'.Str::after( $file, $path_prefix) );
+            return asset( 'media/assets/'.Str::after( $file, $path_prefix) );
         } );
 
         return [
