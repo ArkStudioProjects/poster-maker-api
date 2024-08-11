@@ -29,8 +29,10 @@ class Design extends Model implements HasMedia
             ->registerMediaConversions( function (Media $media) {
                 $this
                     ->addMediaConversion('thumbnail')
+                    ->optimize()
                     ->width(119)
-                    ->height(168);
+                    ->height(168)
+                    ->format('webp');
             } );
     }
 

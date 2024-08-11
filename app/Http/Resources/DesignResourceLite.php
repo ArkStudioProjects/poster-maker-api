@@ -18,8 +18,13 @@ class DesignResourceLite extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'categories' => $this->categories()->pluck('id'),
-            'thumbnail' => $this->getFirstMediaUrl('preview'),
+            'thumbnail' => $this->getThumbnail(),
             'created_at' => $this->created_at,
         ];
+    }
+
+    private function getThumbnail()
+    {
+        return $this->getFirstMediaUrl('preview', 'thumbnail');
     }
 }
