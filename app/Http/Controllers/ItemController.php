@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Classes\DesignImages;
 use App\Http\Resources\DesignResource;
+use App\Http\Resources\DesignResourceLite;
 use App\Models\Design;
 use Illuminate\Http\Request;
 
@@ -22,9 +23,15 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( Request $request )
     {
-        //
+        $search = $request->input('search');
+        if ( $search ) {
+            $designs = Design::search($search)->get();
+            return DesignResourceLite::collection($designs);
+        }
+        
+        return response('Invalid request', 400);
     }
 
     /**
