@@ -54,6 +54,7 @@ class Design extends Model implements HasMedia
         return [
             'title' => $this->title,
             'keywords' => $this->keywords,
+            'categories' => $this->categories->pluck('name'),
         ];
     }
 }
